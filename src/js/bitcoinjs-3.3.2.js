@@ -9256,7 +9256,6 @@ ECPair.makeBip47ReceiveKey= function(accountKey, remotePubkey, index, options) {
 
   // A = sG + aG
   var sG = secp256k1.G.multiply(s);
-  console.log(sG.toHex())
   sG.curve.validate(sG);
 
   var aG = secp256k1.G.multiply(a);
@@ -9299,7 +9298,6 @@ ECPair.makeBip47SendKey= function(accountKey, remotePubkey, index, options) {
 
   // sG
   var sG = secp256k1.G.multiply(s);
-  console.log(sG.toHex())
   sG.curve.validate(sG);
 
   // B'= sG + B
@@ -9627,9 +9625,8 @@ HDNode.masterFromPaymentCode = function (string, networks) {
 
   if (buffer[0] != 0x47) throw new Error('Invalid payment code')
 
-  // Byte 0: version (required value: 0x01)
-  console.log("Version: ")
-  console.log(buffer[1])
+  // Byte 1: version (required value: 0x01)
+  if (buffer[1] !== 0x01) throw new Error('Invalid version: ' + buffer[1])
 
   // 32 bytes: the x value, must be a member of the secp256k1 group
   var pubkey = buffer.slice(3, 36)
@@ -9745,11 +9742,8 @@ HDNode.prototype.toPaymentCode = function() {
     buffer[1] = 0x01;
     buffer[2] = 0x00;
 
-    console.log(this.keyPair.getPublicKeyBuffer()) // 33
-    console.log(base58check.encode(this.keyPair.getPublicKeyBuffer()))
     this.keyPair.getPublicKeyBuffer().copy(buffer, 3) // 3 - 35 inclusive
 
-    console.log(this.chainCode);
     this.chainCode.copy(buffer, 36)  // 35 - 67 inclusive
     return base58check.encode(buffer)
 }

@@ -25,7 +25,7 @@
     var generationProcesses = [];
 
     var DOM = {};
-    DOM.derivedAddressesHeadText = $("#local-addreses-headtext")
+    DOM.derivedAddressesHeadText = $("#local-address-list-headtext")
     DOM.privacyScreenToggle = $(".privacy-screen-toggle");
     DOM.network = $(".network");
     DOM.bip32Client = $("#bip32-client");
@@ -84,7 +84,7 @@
     DOM.bip47localpaycode = $("#bip47 #local-paycode");
     DOM.bip47notificationaddress = $("#bip47 #notification-address");
     DOM.bip47remotepaycode = $("#bip47 #remote-paycode");
-    DOM.bip47remoteaddresses = $("#bip47-remote-addresses")
+    DOM.bip47remoteaddresses = $("#bip47-remote-address-list")
     DOM.bip49unavailable = $("#bip49 .unavailable");
     DOM.bip49available = $("#bip49 .available");
     DOM.bip49path = $("#bip49-path");
@@ -687,7 +687,6 @@
             path += change;
             DOM.bip47path.val(path);
             var derivationPath = DOM.bip47path.val();
-            console.log("Using derivation path from BIP47 tab: " + derivationPath);
 
             if (DOM.bip47remotepaycode.val().length > 79) {
                 DOM.bip47remoteaddresses.removeClass("hidden");
@@ -706,7 +705,6 @@
             path += change;
             DOM.bip49path.val(path);
             var derivationPath = DOM.bip49path.val();
-            console.log("Using derivation path from BIP49 tab: " + derivationPath);
             return derivationPath;
         }
         else if (bip84TabSelected()) {
@@ -721,17 +719,14 @@
             path += change;
             DOM.bip84path.val(path);
             var derivationPath = DOM.bip84path.val();
-            console.log("Using derivation path from BIP84 tab: " + derivationPath);
             return derivationPath;
         }
         else if (bip32TabSelected()) {
             var derivationPath = DOM.bip32path.val();
-            console.log("Using derivation path from BIP32 tab: " + derivationPath);
             return derivationPath;
         }
         else if (bip141TabSelected()) {
             var derivationPath = DOM.bip141path.val();
-            console.log("Using derivation path from BIP141 tab: " + derivationPath);
             return derivationPath;
         }
         else {
@@ -1150,6 +1145,7 @@
     function clearAddressesList() {
         DOM.derivedAddressesHeadText = "Derived Addresses"
         DOM.addresses.empty();
+        DOM.remoteaddresses.empty();
         DOM.csv.val("");
         stopGenerating();
     }
