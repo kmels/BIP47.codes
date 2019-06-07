@@ -829,24 +829,9 @@
         // using remote payment code, calculate deposit and send keys 
         var remotePaycode = DOM.bip47remotepaycode.val();
         if (remotePaycode.length > 79) {
-            DOM.derivedAddressesHeadText = "Deposit Addresses"
-        
-            // TODO: Validate 
-            bip47RemoteKey = bitcoinjs.bitcoin.HDNode.masterFromPaymentCode(remotePaycode);
-            
-            var bip47ReceiveKey = bitcoinjs.bitcoin.ECPair.makeBip47ReceiveKey(bip47AccountKey, bip47RemoteKey, 0)
-            
-            //accountExtendedKey.keyPair.getBip47ReceiveKey(remotePaycode, 1);
-            console.log("Bip 47 receive key:")
-            console.log(bip47ReceiveKey)
-
-            var address = bip47ReceiveKey.getAddress().toString();
-            console.log("ADDRESS: ")
-            console.log(address)
-            
+            DOM.derivedAddressesHeadText = "Deposit Addresses"       
+            bip47RemoteKey = bitcoinjs.bitcoin.HDNode.masterFromPaymentCode(remotePaycode);            
         }
-        // sG = Sx.curve.G.multiply(s)
-        // console.log(sG)*/
     }
 
     function secretPoint(a, B) {
@@ -881,8 +866,6 @@
         path += purpose + "'/";
         path += coin + "'/";
         path += account + "'/";
-	console.log("Account extended key ");
-	console.log(path);
         // Calculate the account extended keys
         var accountExtendedKey = calcBip32ExtendedKey(path);
         var accountXprv = accountExtendedKey.toBase58();
@@ -965,9 +948,7 @@
 
         function calculateValues() {
             setTimeout(function() {
-                //console.log("Calculating values")
                 if (!self.shouldGenerate) {
-                    console.log("Stop")
                     return;
                 }
                 // derive HDkey for this row of the table
@@ -1094,8 +1075,6 @@
                     
                     var sendKeyPair = bitcoinjs.bitcoin.ECPair.makeBip47SendKey(bip47AccountKey, bip47RemoteKey, index);
                     var remoteAddress = sendKeyPair.getAddress().toString();
-                    console.log("RECEIVE: " + address)
-                    console.log("SEND: " + remoteAddress)
                     addAccountAddressToList(indexText, remoteAddress, pubkey, privkey, DOM.remoteaddresses);
                 } else {
                     addAccountAddressToList(indexText, address, pubkey, privkey, DOM.addresses);
